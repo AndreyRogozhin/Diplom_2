@@ -3,6 +3,7 @@ package org.example;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.hamcrest.core.IsEqual;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,10 +57,19 @@ public class LoginUserTest {
     @Step("Авторизация с указанием несуществующего логина - код возврата 400")
     public void loginCourierWrongLoginStatus404() {
 
-        Credentials credentialsNewEmail = new Credentials(user.getEmail() + "xxx", user.getPassword(), user.getName());
-    //    response = userClient.login(credentialsNewEmail, token);
+        Credentials cred2 = response.body().as(Credentials.class);
+        Credentials credentialsNewEmail = new Credentials("xxx" + user.getEmail()  , user.getPassword(), user.getName());
+        response = userClient.login(credentialsNewEmail, cred2.getAccessToken());
         response.then()
-                .statusCode(404);
+                .statusCode(401)
+                .and()
+                .assertThat().body("success", IsEqual.equalTo(false))
+                .and()
+                .assertThat().body("message", IsEqual.equalTo("email or password are incorrect"));
+
+
+
+        // {"success":false,"message":"email or password are incorrect"}
     }
 
 /*

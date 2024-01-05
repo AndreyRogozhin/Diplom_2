@@ -17,10 +17,12 @@ public class UserClient {
 
 
     private String BASE_URL = "https://stellarburgers.nomoreparties.site";
-    private String USER_URL = "/api/auth/register";
+    private String CREATE_URL = "/api/auth/register";
     private String LOGIN_URL = "/api/auth/login";
+    private String EDIT_URL = "/api/auth/user";
     //private String DELETE_URL = "/api/v1/courier/";
-    //private String ORDERS_URL = "/api/v1/orders";
+    private String ORDERS_URL = "/api/orders";
+    private String INGRS_URL = "/api/ingredients";
 
 @Step("Создание пользователя {user}")
     public Response create (User user){
@@ -28,37 +30,71 @@ public class UserClient {
                     .header("Content-type", "application/json")
                     .body(user)
                     .when()
-                    .post(USER_URL);
+                    .post(CREATE_URL);
     }
 
 
 
 
-    @Step ("Авторизация курьера с учётными данными {credentials}")
+    @Step ("Авторизация пользователя с учётными данными {credentials}")
     public Response login ( Credentials credentials, String token ) {
-        return given()
+        Response response =  given()
                 .header("Content-type", "application/json")
                 .header("accessToken", token)
                 .body(credentials)
                 .when()
                 .post(LOGIN_URL);
+
+        return response;
+    }
+
+
+    @Step ("Получение данных пользователля")
+    public Response read ( Credentials credentials, String token ) {
+        Response response= given()
+                .header("Content-type", "application/json")
+                .header("Authorization", token)
+                .body(credentials)
+                .when()
+                .get(EDIT_URL);
+
+        return  response;
+    }
+
+
+
+    @Step ("Редактирование данных пользователля")
+    public Response edit ( Credentials credentials, String token ) {
+    Response response = given()
+                .header("Content-type", "application/json")
+                .header("Authorization", token)
+                .body(credentials)
+                .when()
+                .patch(EDIT_URL);
+        return response;
     }
 
 
 
 
-    /*
-    @Step ("Создание заказа с параметрам {order}")
-    public Response createOrder (Order order){
-        return             given()
+
+
+    @Step ("Создание заказа с параметрами {ingredients}")
+//    public Response createOrder (Ingredients ingredients, String token){
+    public Response createOrder (String order, String token){
+
+        Response response =    given()
                 .header("Content-type", "application/json")
+                .header("Authorization", token)
                 .body(order)
                 .when()
                 .post(ORDERS_URL);
+
+        return response;
     }
 
 
-
+/*
     @Step ("Удаление курьера с ID {id}")
     public Response delete(int id) {
         return given()

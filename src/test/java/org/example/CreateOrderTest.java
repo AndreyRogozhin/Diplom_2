@@ -123,6 +123,27 @@ public class CreateOrderTest {
 
     }
 
+    @Test
+    @Step("Создание заказа с неверным списком списка ингредиентов - код возврата 500")
+    public void createWrongIngredientsStatus500(){
+        //        credentials = user.credsFromUser();
+        //Credentials cred2 = response.body().as(Credentials.class);
+        //String hhh = response.;
+
+        ids.setIngredients("wrong list");
+        String order = "{ \"ingredients\":\"" + ids.getIngredients() + "\"}";
+        response = userClient.createOrder(order,"");
+
+        response.then()
+                .statusCode(500)
+                .and()
+                .assertThat().body( containsString("Internal Server Error"));
+
+
+    }
+
+
+
     /*
     @Test
     @Step("Создание заказа без списка ингредиентов - код возврата 400")

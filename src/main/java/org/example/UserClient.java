@@ -94,6 +94,22 @@ public class UserClient {
     }
 
 
+    @Step ("Получение списка заказов")
+    public Response getOrders(String token){
+
+        Response response =    given()
+                .header("Content-type", "application/json")
+                .header("Authorization", token)
+//                .body(order)
+                .when()
+                .get(ORDERS_URL);
+
+        return response;
+    }
+
+
+
+
 /*
     @Step ("Удаление курьера с ID {id}")
     public Response delete(int id) {

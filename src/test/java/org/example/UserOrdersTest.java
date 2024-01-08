@@ -22,6 +22,7 @@ public class UserOrdersTest {
     private User user;
     private Credentials credentials;
     private Ingredients ids;
+    Credentials cred2;
 
 
     @Before
@@ -31,7 +32,8 @@ public class UserOrdersTest {
         user = randomUser();
         userClient = new UserClient();
         response = userClient.create(user);
-        ids = new Ingredients();
+        //ids = new Ingredients();
+        cred2 = response.body().as(Credentials.class);
 
 
     }
@@ -41,8 +43,7 @@ public class UserOrdersTest {
     @Test
     @Step("Успешная авторизация - код возврата 200")
     public void getOrdersAthorisedUserStatus200() {
-    //    credentials = user.credsFromUser();
-        Credentials cred2 = response.body().as(Credentials.class);
+
         response = userClient.getOrders(cred2.getAccessToken());
 
         response.then()
@@ -53,10 +54,9 @@ public class UserOrdersTest {
 
 
     @Test
-    @Step("Нет авторизации - код возврата 200 и полная информация о клиенте")
+    @Step("Нет авторизации - код возврата 401")
     public void getOrdersNoAthorisationStatus401() {
-        //    credentials = user.credsFromUser();
-        //Credentials cred2 = response.body().as(Credentials.class);
+
         response = userClient.getOrders("");
 
         response.then()
@@ -65,14 +65,6 @@ public class UserOrdersTest {
                 .assertThat().body("success", equalTo(false))
                 .and()
                 .assertThat().body("message", IsEqual.equalTo("You should be authorised"));
-
-
-
-
-        /*
-         "success": false,
-    "message": "You should be authorised"
-         */
     }
 
 }

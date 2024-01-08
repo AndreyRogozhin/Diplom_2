@@ -30,14 +30,14 @@ public class CreateUserTest {
     }
 
     @Test
-    @Step("Успешное создание курьера - код возврата 200")
+    @Step("Успешное создание пользователя - код возврата 200")
     public void createCourierStatus200() {
         response = userClient.create(user);
         assertEquals("test fail!", 200, response.statusCode());
     }
 
     @Test
-    @Step("Успешное создание курьера - ответ OK")
+    @Step("Успешное создание пользователя - ответ OK")
     public void createCourierGetOK() {
         response = userClient.create(user);
         response.then().assertThat().body("success", equalTo(true));
@@ -90,7 +90,7 @@ public class CreateUserTest {
 
 
     @Test
-    @Step("Создание курьера без пароля - код возврата 400")
+    @Step("Создание пользователя без пароля - код возврата 400")
     public void createCourierNoPasswordStatus400() {
         user.setPassword("");
         response = userClient.create(user);

@@ -1,13 +1,23 @@
 package org.example;
 
 public class Ingredients {
-    public String getIngredients() {
-        return ingredients;
-    }
 
-    public void setIngredients(String ingredients) {
-        this.ingredients = ingredients;
-    }
+        public Boolean success;
+        public Object[] data;
 
-    private String ingredients;
+        public Boolean getSuccess() {
+                return this.success;
+        }
+
+        public void setSuccess(Boolean success) {
+                this.success = success;
+        }
+
+        public Object[] getData() {
+                return this.data;
+        }
+
+        public void setData(Object[] data) {
+                this.data = data;
+        }
 }

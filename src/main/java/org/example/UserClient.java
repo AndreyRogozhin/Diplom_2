@@ -22,7 +22,7 @@ public class UserClient {
     private String EDIT_URL = "/api/auth/user";
     //private String DELETE_URL = "/api/v1/courier/";
     private String ORDERS_URL = "/api/orders";
-    private String INGRS_URL = "/api/ingredients";
+    private String INGREDIENTS_URL = "/api/ingredients";
 
 @Step("Создание пользователя {user}")
     public Response create (User user){
@@ -75,6 +75,15 @@ public class UserClient {
     }
 
 
+    @Step ("Получение списка ингредиентов")
+    public Response getIndredients(){
+        Response response =    given()
+                .header("Content-type", "application/json")
+                .when()
+                .get(INGREDIENTS_URL);
+
+        return response;
+    }
 
 
 

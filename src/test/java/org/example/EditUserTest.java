@@ -17,7 +17,7 @@ public class EditUserTest {
     private Response response;
     private UserClient userClient;
     private User user;
-    private Credentials credentials;
+    private Credentials credentials, cred2;
 
 
     @Before
@@ -27,15 +27,19 @@ public class EditUserTest {
         user = randomUser();
         userClient = new UserClient();
         response = userClient.create(user);
+
+        credentials = user.credsFromUser();
+        cred2 = response.body().as(Credentials.class);
+        response = userClient.login(credentials,cred2.getAccessToken());
+
     }
 
     @Test
     @Step("Успешное редактирование - код возврата ")
     public void editAuthorisedUserStatus200() {
-        credentials = user.credsFromUser();
-        Credentials cred2 = response.body().as(Credentials.class);
-        //String hhh = response.;
-        response = userClient.login(credentials,cred2.getAccessToken());
+        //        credentials = user.credsFromUser();
+        //Credentials cred2 = response.body().as(Credentials.class);
+        //response = userClient.login(credentials,cred2.getAccessToken());
         credentials.setName("newUserName");
         //        response = userClient.read(credentials,cred2.getAccessToken());
         // считать результат в json
@@ -54,7 +58,7 @@ public class EditUserTest {
     @Test
     @Step("Редактирование без авторизации - код возврата 401")
     public void editNotAuthorisedUserStatus401() {
-        credentials = user.credsFromUser();
+    //    credentials = user.credsFromUser();
         //        Credentials cred2 = response.body().as(Credentials.class);
         //String hhh = response.;
         credentials.setName("New Username");

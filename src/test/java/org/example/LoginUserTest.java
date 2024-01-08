@@ -27,6 +27,7 @@ public class LoginUserTest {
     private UserClient userClient;
     private User user;
     private Credentials credentials;
+    private Credentials cred2;
 
 
     @Before
@@ -36,6 +37,8 @@ public class LoginUserTest {
         user = randomUser();
         userClient = new UserClient();
         response = userClient.create(user);
+        credentials = user.credsFromUser();
+        cred2 = response.body().as(Credentials.class);
 
 
     }
@@ -43,9 +46,6 @@ public class LoginUserTest {
     @Test
     @Step("Успешная авторизация - код возврата 200")
     public void loginUserSucessfullyStatus200() {
-        credentials = user.credsFromUser();
-        Credentials cred2 = response.body().as(Credentials.class);
-        //String hhh = response.;
         response = userClient.login(credentials,cred2.getAccessToken());
         response.then()
                 .statusCode(200);
@@ -55,9 +55,7 @@ public class LoginUserTest {
 
     @Test
     @Step("Авторизация с указанием несуществующего логина - код возврата 400")
-    public void loginCourierWrongLoginStatus404() {
-
-        Credentials cred2 = response.body().as(Credentials.class);
+    public void loginUserWrongLoginStatus404() {
         Credentials credentialsNewEmail = new Credentials("xxx" + user.getEmail()  , user.getPassword(), user.getName());
         response = userClient.login(credentialsNewEmail, cred2.getAccessToken());
         response.then()
@@ -66,10 +64,6 @@ public class LoginUserTest {
                 .assertThat().body("success", IsEqual.equalTo(false))
                 .and()
                 .assertThat().body("message", IsEqual.equalTo("email or password are incorrect"));
-
-
-
-        // {"success":false,"message":"email or password are incorrect"}
     }
 
 /*

@@ -20,7 +20,6 @@ public class UserClient {
     private String CREATE_URL = "/api/auth/register";
     private String LOGIN_URL = "/api/auth/login";
     private String EDIT_URL = "/api/auth/user";
-    //private String DELETE_URL = "/api/v1/courier/";
     private String ORDERS_URL = "/api/orders";
     private String INGREDIENTS_URL = "/api/ingredients";
 
@@ -109,7 +108,6 @@ public class UserClient {
         Response response =    given()
                 .header("Content-type", "application/json")
                 .header("Authorization", token)
-//                .body(order)
                 .when()
                 .get(ORDERS_URL);
 
@@ -119,15 +117,19 @@ public class UserClient {
 
 
 
-/*
-    @Step ("Удаление курьера с ID {id}")
-    public Response delete(int id) {
-        return given()
+
+    @Step ("Удаление клиента")
+    public Response delete(String token) {
+
+        Response response =  given()
                 .header("Content-type", "application/json")
-//                .body(courier)
+                .header("Authorization", token)
                 .when()
-               .delete(DELETE_URL + id);
+                .delete(EDIT_URL);
+				
+		return response;
+		
     }
-*/
+
 
 }

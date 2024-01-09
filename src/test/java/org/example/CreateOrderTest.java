@@ -6,6 +6,7 @@ import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.hamcrest.core.IsEqual;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,7 +41,6 @@ public class CreateOrderTest {
         user = randomUser();
         userClient = new UserClient();
         response = userClient.create(user);
-        //ingredients = new Ingredients();
 
         credentials = user.credsFromUser();
         cred2 = response.body().as(Credentials.class);
@@ -133,5 +133,10 @@ public class CreateOrderTest {
 
     }
 
+    @After
+    @Step("Удаление созданного клиента")
+    public void tearDown() {
+        response = userClient.delete(cred2.getAccessToken());
+    }
 
 }

@@ -5,6 +5,7 @@ import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.hamcrest.core.IsEqual;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -65,6 +66,12 @@ public class UserOrdersTest {
                 .assertThat().body("success", equalTo(false))
                 .and()
                 .assertThat().body("message", IsEqual.equalTo("You should be authorised"));
+    }
+
+    @After
+    @Step("Удаление созданного клиента")
+    public void tearDown() {
+        response = userClient.delete(cred2.getAccessToken());
     }
 
 }

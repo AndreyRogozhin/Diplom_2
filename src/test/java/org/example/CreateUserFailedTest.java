@@ -14,7 +14,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 
 
-public class CreateUserTest {
+public class CreateUserFailedTest {
 
     private Response response;
     private UserClient userClient;
@@ -28,22 +28,6 @@ public class CreateUserTest {
         user = randomUser();
         userClient = new UserClient();
     }
-
-    @Test
-    @Step("Успешное создание пользователя - код возврата 200")
-    public void createCourierStatus200() {
-        response = userClient.create(user);
-        assertEquals("test fail!", 200, response.statusCode());
-    }
-
-    @Test
-    @Step("Успешное создание пользователя - ответ OK")
-    public void createCourierGetOK() {
-        response = userClient.create(user);
-        response.then().assertThat().body("success", equalTo(true));
-
-    }
-
 
     @Test
     @Step("Повторное создание пользователя - код возврата 403")
@@ -68,7 +52,7 @@ public class CreateUserTest {
 
     @Test
     @Step("Создание пользователя без email- код возврата 403")
-    public void createCourierNoEmailStatus403() {
+    public void createUserNoEmailStatus403() {
         user.setEmail("");
         response = userClient.create(user);
 
@@ -79,7 +63,7 @@ public class CreateUserTest {
 
     @Test
     @Step("Создание пользователя без email- сообщение об ошибке")
-    public void createCourierNoEmailStatusFailed() {
+    public void createUserNoEmailStatusFailed() {
         user.setEmail("");
         response = userClient.create(user);
         response.then().assertThat().body("success", equalTo(false))
@@ -90,23 +74,19 @@ public class CreateUserTest {
 
 
     @Test
-    @Step("Создание пользователя без пароля - код возврата 400")
-    public void createCourierNoPasswordStatus400() {
+    @Step("Создание пользователя без пароля - код возврата 403")
+    public void createUserNoPasswordStatus403() {
         user.setPassword("");
         response = userClient.create(user);
 
-        response.then().statusCode(400);
+        response.then().statusCode(403)
+                .and()
+                .assertThat().body("message", equalTo("Email, password and name are required fields"));
+
 
     }
-/*
-    @After
-    public void tearDown() {
-        credentials = user.credsFromCourier();
-        response = userClient.login(credentials);
-        Id id = response.body().as(Id.class);
-        response = userClient.delete(id.getId());
-    }
-*/
+
+
 
 
 }

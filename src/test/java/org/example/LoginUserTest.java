@@ -66,17 +66,12 @@ public class LoginUserTest {
                 .assertThat().body("message", IsEqual.equalTo("email or password are incorrect"));
     }
 
-/*
+
 
     @After
     @Step("Удаление созданного клиента")
     public void tearDown() {
-        credentials = courier.credsFromCourier();
-        response = courierClient.login(credentials);
-        Id id = response.body().as(Id.class);
-        response = courierClient.delete(id.getId());
-
+        response = userClient.delete(cred2.getAccessToken());
     }
 
- */
 }

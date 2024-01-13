@@ -7,7 +7,6 @@ import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assert;
 
 import static org.example.UserGenerator.randomUser;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -19,7 +18,9 @@ public class CreateUserSuccessTest {
     private Response response;
     private UserClient userClient;
     private User user;
-    private Credentials credentials;
+
+
+//    private Credentials credentials;
 
 
     @Before
@@ -45,14 +46,12 @@ public class CreateUserSuccessTest {
     }
 
 
-
     @After
     @Step("Удаление созданного клиента")
     public void tearDown() {
-        credentials = response.body().as(Credentials.class);
-        response = userClient.delete(credentials.getAccessToken());
+        String token = response.path("accessToken");
+        response = userClient.delete(token);
     }
-
 
 
 }

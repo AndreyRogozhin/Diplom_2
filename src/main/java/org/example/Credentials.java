@@ -9,6 +9,16 @@ public class Credentials {
     private String refreshToken;
 
 
+    public Credentials(String email, String password, String name) {
+        this.password = password;
+        this.name = name;
+        this.email = email;
+
+    }
+
+    public Credentials() {
+    }
+
     public String getName() {
         return name;
     }
@@ -17,14 +27,13 @@ public class Credentials {
         this.name = name;
     }
 
-        public String getEmail() {
+    public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
-
 
     public String getAccessToken() {
         return accessToken;
@@ -41,17 +50,6 @@ public class Credentials {
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
-
-
-    public Credentials(String email, String password, String name) {
-        this.password = password;
-        this.name = name;
-        this.email = email;
-
-    }
-
-    public Credentials() {}
-
 
     public String getPassword() {
         return password;

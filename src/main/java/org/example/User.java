@@ -10,6 +10,12 @@ public class User {
     }
 
 
+    public User(String email, String password, String name) {
+        this.email = email + "@yandex.ru";
+        this.password = password;
+        this.name = name;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -34,18 +40,9 @@ public class User {
         this.email = email;
     }
 
-
-    public User(String email, String password, String name) {
-        this.email = email + "@yandex.ru";
-        this.password = password;
-        this.name = name;
-    }
-
-
-    public Credentials credsFromUser(){
+    public Credentials credsFromUser() {
         return new Credentials(this.email, this.password, this.name);
     }
 
 
-
-    }
+}

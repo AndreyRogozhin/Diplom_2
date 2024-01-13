@@ -7,27 +7,22 @@ import org.hamcrest.core.IsEqual;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assert;
 
-import static io.restassured.RestAssured.*;
 import static org.example.UserGenerator.randomUser;
-import static org.example.UserGenerator.randomUser;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-
-import org.hamcrest.MatcherAssert;
 
 public class LoginUserTest {
 
 
-    private String BASE_URL = "https://stellarburgers.nomoreparties.site";
-    private String LOGIN_URL = "/api/user/login";
+    private final String BASE_URL = "https://stellarburgers.nomoreparties.site";
+    private final String LOGIN_URL = "/api/user/login";
 
     private Response response;
     private UserClient userClient;
     private User user;
     private Credentials credentials;
     private Credentials cred2;
+    private  String token;
+
 
 
     @Before
@@ -38,7 +33,8 @@ public class LoginUserTest {
         userClient = new UserClient();
         response = userClient.create(user);
         credentials = user.credsFromUser();
-        cred2 = response.body().as(Credentials.class);
+        token = response.path("accessToken");
+
 
 
     }
@@ -46,18 +42,17 @@ public class LoginUserTest {
     @Test
     @Step("Успешная авторизация - код возврата 200")
     public void loginUserSucessfullyStatus200() {
-        response = userClient.login(credentials,cred2.getAccessToken());
+        response = userClient.login(credentials, token);
         response.then()
                 .statusCode(200);
     }
 
 
-
     @Test
     @Step("Авторизация с указанием несуществующего логина - код возврата 400")
     public void loginUserWrongLoginStatus404() {
-        Credentials credentialsNewEmail = new Credentials("xxx" + user.getEmail()  , user.getPassword(), user.getName());
-        response = userClient.login(credentialsNewEmail, cred2.getAccessToken());
+        Credentials credentialsNewEmail = new Credentials("xxx" + user.getEmail(), user.getPassword(), user.getName());
+        response = userClient.login(credentialsNewEmail, token);
         response.then()
                 .statusCode(401)
                 .and()
@@ -67,11 +62,10 @@ public class LoginUserTest {
     }
 
 
-
     @After
     @Step("Удаление созданного клиента")
     public void tearDown() {
-        response = userClient.delete(cred2.getAccessToken());
+        response = userClient.delete(token);
     }
 
 }

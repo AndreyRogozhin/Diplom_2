@@ -4,10 +4,8 @@ package org.example;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assert;
 
 import static org.example.UserGenerator.randomUser;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -46,7 +44,6 @@ public class CreateUserFailedTest {
         response.then().assertThat().body("success", equalTo(false))
                 .and()
                 .assertThat().body("message", equalTo("User already exists"));
-        ;
     }
 
 
@@ -60,7 +57,6 @@ public class CreateUserFailedTest {
     }
 
 
-
     @Test
     @Step("Создание пользователя без email- сообщение об ошибке")
     public void createUserNoEmailStatusFailed() {
@@ -70,7 +66,6 @@ public class CreateUserFailedTest {
                 .and()
                 .assertThat().body("message", equalTo("Email, password and name are required fields"));
     }
-
 
 
     @Test
@@ -85,8 +80,6 @@ public class CreateUserFailedTest {
 
 
     }
-
-
 
 
 }

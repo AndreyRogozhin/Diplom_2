@@ -12,13 +12,14 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 public class EditUserTest {
 
-    private String BASE_URL = "https://stellarburgers.nomoreparties.site";
-    private String EDIT_URL = "/api/auth/user";
+    private final String BASE_URL = "https://stellarburgers.nomoreparties.site";
+    private final String EDIT_URL = "/api/auth/user";
 
     private Response response;
     private UserClient userClient;
     private User user;
     private Credentials credentials, cred2;
+    private  String token;
 
 
     @Before
@@ -30,8 +31,8 @@ public class EditUserTest {
         response = userClient.create(user);
 
         credentials = user.credsFromUser();
-        cred2 = response.body().as(Credentials.class);
-        response = userClient.login(credentials,cred2.getAccessToken());
+        token = response.path("accessToken");
+        response = userClient.login(credentials, token);
 
     }
 
@@ -39,7 +40,7 @@ public class EditUserTest {
     @Step("Успешное редактирование - код возврата 200")
     public void editAuthorisedUserStatus200() {
         credentials.setName("newUserName");
-        response = userClient.edit(credentials,cred2.getAccessToken());
+        response = userClient.edit(credentials, token);
 
         response.then().statusCode(200)
                 .and()
@@ -53,7 +54,7 @@ public class EditUserTest {
     @Step("Редактирование без авторизации - код возврата 401")
     public void editNotAuthorisedUserStatus401() {
         credentials.setName("New Username");
-        response = userClient.edit(credentials,"");
+        response = userClient.edit(credentials, "");
 
         response.then().statusCode(401)
                 .and()
@@ -66,7 +67,7 @@ public class EditUserTest {
     @After
     @Step("Удаление созданного клиента")
     public void tearDown() {
-        response = userClient.delete(cred2.getAccessToken());
+        response = userClient.delete(token);
     }
 }
 

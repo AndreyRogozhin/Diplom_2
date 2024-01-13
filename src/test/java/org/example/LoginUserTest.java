@@ -21,8 +21,7 @@ public class LoginUserTest {
     private User user;
     private Credentials credentials;
     private Credentials cred2;
-    private  String token;
-
+    private String token;
 
 
     @Before
@@ -34,7 +33,6 @@ public class LoginUserTest {
         response = userClient.create(user);
         credentials = user.credsFromUser();
         token = response.path("accessToken");
-
 
 
     }

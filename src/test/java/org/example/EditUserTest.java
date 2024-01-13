@@ -18,7 +18,7 @@ public class EditUserTest {
     private Response response;
     private UserClient userClient;
     private User user;
-    private Credentials credentials, cred2;
+    private Credentials credentials;
     private  String token;
 
 

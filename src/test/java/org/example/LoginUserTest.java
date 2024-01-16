@@ -14,13 +14,11 @@ public class LoginUserTest {
 
 
     private final String BASE_URL = "https://stellarburgers.nomoreparties.site";
-    private final String LOGIN_URL = "/api/user/login";
 
     private Response response;
     private UserClient userClient;
     private User user;
     private Credentials credentials;
-    private Credentials cred2;
     private String token;
 
 

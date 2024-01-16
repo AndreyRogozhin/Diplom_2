@@ -17,7 +17,6 @@ public class CreateUserFailedTest {
     private Response response;
     private UserClient userClient;
     private User user;
-    private Credentials credentials;
 
 
     @Before

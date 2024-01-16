@@ -20,9 +20,6 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class CreateOrderTest {
 
     private final String BASE_URL = "https://stellarburgers.nomoreparties.site";
-    private final String ORDERS_URL = "/api/orders";
-    private final String INGRS_URL = "/api/ingredients";
-
 
     private Response response;
     private UserClient userClient;

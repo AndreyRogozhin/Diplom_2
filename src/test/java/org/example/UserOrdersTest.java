@@ -15,13 +15,9 @@ import static org.hamcrest.core.IsEqual.equalTo;
 public class UserOrdersTest {
     Credentials cred2;
     private final String BASE_URL = "https://stellarburgers.nomoreparties.site";
-    private final String ORDERS_URL = "/api/orders";
-    private final String INGRS_URL = "/api/ingredients";
     private Response response;
     private UserClient userClient;
     private User user;
-    private Credentials credentials;
-    private Ingredients ids;
     private String token;
 
 
